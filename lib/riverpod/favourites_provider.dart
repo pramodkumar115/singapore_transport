@@ -1,20 +1,30 @@
 import 'package:riverpod/legacy.dart';
-import 'package:singapore_transport/Helpers/util.dart';
+import 'package:singapore_transport/HiveFunctions/fav_hive_functions.dart';
 
-class FavouritesNotifier extends StateNotifier<List<int>> {
+class FavouritesNotifier extends StateNotifier<List> {
   FavouritesNotifier() : super(List.empty());
 
-  fetchFavourites() async{
-    state = await getFavoritesFromFile();
+  fetchFavourites(){
+    state = FavHiveFunctions.getAllFavourites();
   }
 
-  updateFavourites(ids) async {
-    await saveFavoritesFile(ids);
-    await fetchFavourites();
+  updateFavourites(Map station) {
+    FavHiveFunctions.createFavourites(station);
+    fetchFavourites();
+  }
+
+  deleteFavourite(int key) {
+    FavHiveFunctions.deleteFavourite(key);
+    fetchFavourites();
+  }
+
+  deleteAllFavourites() {
+    FavHiveFunctions.deleteAllFavourites();
+    fetchFavourites();
   }
 }
 
 final favouritesProvider = 
-StateNotifierProvider<FavouritesNotifier, List<int>>((ref) {
+StateNotifierProvider<FavouritesNotifier, List>((ref) {
   return FavouritesNotifier();
 });

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:singapore_transport/HiveFunctions/fav_hive_functions.dart';
 import 'package:singapore_transport/Home/home_view.dart';
 import 'package:singapore_transport/riverpod/preferences_provider.dart';
 
@@ -9,6 +11,8 @@ late SharedPreferences prefs;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox(favBox);
   runApp(ProviderScope(child: MyApp()));
 }
 

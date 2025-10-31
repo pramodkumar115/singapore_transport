@@ -6,7 +6,6 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:singapore_transport/Bus/nearest_bus_station_list.dart';
 import 'package:singapore_transport/Favorites/favorites_view.dart';
 import 'package:singapore_transport/riverpod/favourites_provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class BusView extends ConsumerStatefulWidget {
   const BusView({super.key});
@@ -21,7 +20,9 @@ class _BusViewState extends ConsumerState<BusView> {
   @override
   void initState() {
     super.initState();
-    ref.read(favouritesProvider.notifier).fetchFavourites();
+    Future.delayed(Duration.zero, () {
+      ref.read(favouritesProvider.notifier).fetchFavourites();
+    });
   }
 
   @override
@@ -49,9 +50,7 @@ class _BusViewState extends ConsumerState<BusView> {
                     border: Border.all(
                       color: subMenu == 'NEAREST_BUSES'
                           ? Colors.red
-                          : Theme.of(context)
-                                .colorScheme
-                                .primaryContainer,
+                          : Theme.of(context).colorScheme.primaryContainer,
                       width: subMenu == 'NEAREST_BUSES' ? 1.5 : 0,
                     ),
                     color: Theme.of(context).colorScheme.tertiaryFixedDim,
@@ -81,9 +80,7 @@ class _BusViewState extends ConsumerState<BusView> {
                     border: Border.all(
                       color: subMenu == 'FAVOURITES'
                           ? Colors.red
-                          : Theme.of(context)
-                                .colorScheme
-                                .primaryContainer,
+                          : Theme.of(context).colorScheme.primaryContainer,
                       width: subMenu == 'FAVOURITES' ? 1.5 : 0,
                     ),
                     color: Theme.of(context).colorScheme.tertiaryFixedDim,

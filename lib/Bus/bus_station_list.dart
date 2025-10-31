@@ -32,19 +32,26 @@ class _BusStationListState extends ConsumerState<BusStationList> {
     });
   }
 
-  addOrRemoveFromFavorite(OneMapBusStation station, List<int> favIds) {
-    List<int> idsToSave = List.empty(growable: true);
+  addOrRemoveFromFavorite(OneMapBusStation station, List favourites) {
+    var favIds = favourites.map((e) => e['id']).toList();
     if (favIds.contains(station.id)) {
-      idsToSave.addAll(favIds.where((element) => element != station.id));
+      ref
+          .read(favouritesProvider.notifier)
+          .deleteFavourite(
+            favIds.indexOf(station.id),
+          );
     } else {
-      idsToSave.addAll([station.id!, ...favIds]);
+      ref.read(favouritesProvider.notifier).updateFavourites({
+        "id": station.id,
+        "name": station.name,
+        "road": station.road,
+      });
     }
-    ref.read(favouritesProvider.notifier).updateFavourites(idsToSave);
   }
 
   @override
   Widget build(BuildContext context) {
-    var favIds = ref.watch(favouritesProvider);
+    List favourites = ref.watch(favouritesProvider);
     return ListView.builder(
       shrinkWrap: true,
       itemCount: widget.busStations.length,
@@ -61,9 +68,9 @@ class _BusStationListState extends ConsumerState<BusStationList> {
               Row(
                 children: [
                   GestureDetector(
-                    onTap: () => addOrRemoveFromFavorite(bs, favIds),
+                    onTap: () => addOrRemoveFromFavorite(bs, favourites),
                     child: Icon(
-                      favIds.contains(bs.id)
+                      favourites.map((e) => e['id']).contains(bs.id)
                           ? Icons.favorite
                           : Icons.favorite_border_outlined,
                       color: Colors.red,
