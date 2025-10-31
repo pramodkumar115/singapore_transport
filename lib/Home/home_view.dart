@@ -54,8 +54,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   border: ShadBorder.all(color: Colors.amber),
                 ),
                 value: 'Bus',
-                // tabBarConstraints: const BoxConstraints(maxWidth: 400),
-                // contentConstraints: const BoxConstraints(maxWidth: 400),
                 tabs: [
                   ShadTab(
                     value: "Bus",
@@ -64,17 +62,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
                     child: Text("Bus"),
                   ),
                   ShadTab(
-                    value: "Favorites",
-                    leading: Icon(Icons.favorite, size: 25),
-                    content: FavoritesView(),
-                    child: Text("Favorites"),
+                    value: "MRT",
+                    leading: Icon(Icons.train, size: 25),
+                    content: Container(child: Text("Under Construction")),
+                    child: Text("MRT"),
                   ),
-                  ShadTab(
-                    value: "Search",
-                    leading: Icon(Icons.search, size: 25),
-                    content: SearchView(),
-                    child: Text("Search"),
-                  ),
+                  
                 ],
               ),
             )

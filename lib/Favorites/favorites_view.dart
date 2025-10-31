@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:singapore_transport/riverpod/favourites_provider.dart';
 
-class FavoritesView extends StatefulWidget {
+class FavoritesView extends ConsumerStatefulWidget {
   const FavoritesView({super.key});
 
   @override
-  State<FavoritesView> createState() => _FavoritesViewState();
+  ConsumerState<FavoritesView> createState() => _FavoritesViewState();
 }
 
-class _FavoritesViewState extends State<FavoritesView> {
+class _FavoritesViewState extends ConsumerState<FavoritesView> {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    return ShadCard(
-      width: screenWidth,
-      backgroundColor: Theme.of(context).colorScheme.tertiaryFixedDim,
-      title: Text("Favorites"),
-      description: Text(""),
-      child: Text("Favorites"),
-    );
+    List<int> busList = ref.watch(favouritesProvider);
+    return busList.isEmpty ? Container(child: Text("No saved favourites yet"))
+    : Container();
+    // FutureBuilder(future: getNearestBusStations(authToken, latitude, longitude), builder: builder)
   }
 }

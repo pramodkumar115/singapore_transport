@@ -1,28 +1,116 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:singapore_transport/Bus/nearest_bus_station_list.dart';
+import 'package:singapore_transport/Favorites/favorites_view.dart';
+import 'package:singapore_transport/riverpod/favourites_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class BusView extends StatefulWidget {
+class BusView extends ConsumerStatefulWidget {
   const BusView({super.key});
 
   @override
-  State<BusView> createState() => _BusViewState();
+  ConsumerState<BusView> createState() => _BusViewState();
 }
 
-class _BusViewState extends State<BusView> {
+class _BusViewState extends ConsumerState<BusView> {
+  String subMenu = 'NEAREST_BUSES';
+
+  @override
+  void initState() {
+    super.initState();
+    ref.read(favouritesProvider.notifier).fetchFavourites();
+  }
+
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-
     return ShadCard(
       width: screenWidth,
+      padding: EdgeInsets.all(10),
       backgroundColor: Theme.of(context).colorScheme.tertiaryFixedDim,
-      title: Text("Bus Stations near you", style: TextStyle(fontSize: 20)),
+      // title: Text("", style: TextStyle(fontSize: 1)),
       description: Text(""),
-      child: NearestBusStationList()
-      );
+      child: Column(
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            spacing: 5,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  setState(() => subMenu = 'NEAREST_BUSES');
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    border: Border.all(
+                      color: subMenu == 'NEAREST_BUSES'
+                          ? Colors.red
+                          : Theme.of(context)
+                                .colorScheme
+                                .primaryContainer,
+                      width: subMenu == 'NEAREST_BUSES' ? 1.5 : 0,
+                    ),
+                    color: Theme.of(context).colorScheme.tertiaryFixedDim,
+                  ),
+                  padding: EdgeInsets.only(
+                    top: 5,
+                    bottom: 5,
+                    left: 20,
+                    right: 20,
+                  ),
+                  child: Icon(
+                    Icons.bus_alert,
+                    color: subMenu == 'NEAREST_BUSES'
+                        ? Colors.red
+                        : Theme.of(context).colorScheme.primaryContainer,
+                    size: 25,
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() => subMenu = 'FAVOURITES');
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    border: Border.all(
+                      color: subMenu == 'FAVOURITES'
+                          ? Colors.red
+                          : Theme.of(context)
+                                .colorScheme
+                                .primaryContainer,
+                      width: subMenu == 'FAVOURITES' ? 1.5 : 0,
+                    ),
+                    color: Theme.of(context).colorScheme.tertiaryFixedDim,
+                  ),
+                  padding: EdgeInsets.only(
+                    top: 5,
+                    bottom: 5,
+                    left: 20,
+                    right: 20,
+                  ),
+                  child: Icon(
+                    Icons.favorite,
+                    color: subMenu == 'FAVOURITES'
+                        ? Colors.red
+                        : Theme.of(context).colorScheme.primaryContainer,
+                    size: 25,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+          subMenu == 'NEAREST_BUSES'
+              ? NearestBusStationList()
+              : FavoritesView(),
+        ],
+      ),
+    );
   }
 }
