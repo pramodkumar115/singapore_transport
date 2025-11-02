@@ -15,17 +15,26 @@ class FavoritesView extends ConsumerStatefulWidget {
 class _FavoritesViewState extends ConsumerState<FavoritesView> {
   @override
   Widget build(BuildContext context) {
+    final double screenHeight = MediaQuery.of(context).size.height;
+
     List busStationList = ref.watch(favouritesProvider);
-    return busStationList.isEmpty ? Container(child: Text("No saved favourites yet"))
-    : BusStationList(busStations: convertToStations(busStationList), currentPosition: null);
-    // FutureBuilder(future: getNearestBusStations(authToken, latitude, longitude), builder: builder)
+    return SizedBox(
+      height: screenHeight * 0.68,
+      child: busStationList.isEmpty
+          ? Center(child: Text("No saved favourites yet", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),))
+          : BusStationList(
+              busStations: convertToStations(busStationList),
+              currentPosition: null,
+            ),
+    );
   }
-  
+
   List<OneMapBusStation> convertToStations(List busStationList) {
-    return busStationList.map((e) => OneMapBusStation(
-      id: e['id'],
-      name: e['name'],
-      road: e['road']
-    )).toList();
+    return busStationList
+        .map(
+          (e) =>
+              OneMapBusStation(id: e['id'], name: e['name'], road: e['road']),
+        )
+        .toList();
   }
 }

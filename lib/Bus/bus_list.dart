@@ -58,41 +58,39 @@ class _BusListState extends ConsumerState<BusList> {
               ? CircularProgressIndicator()
               : ListView.builder(
                   shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: busArrivalInfoList.length,
                   itemBuilder: (context, index) {
                     var busArrivalInfo = busArrivalInfoList[index];
-                    return Container(
-                      // padding: EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            spacing: 10,
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Text(
-                                  busArrivalInfo.serviceNo!,
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                    return Column(
+                      children: [
+                        Row(
+                          spacing: 10,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                busArrivalInfo.serviceNo!,
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Expanded(
-                                flex: 2,
-                                child: Row(
-                                  children: [
-                                    getArrivalInfo(busArrivalInfo.nextBus),
-                                    getArrivalInfo(busArrivalInfo.nextBus2),
-                                    getArrivalInfo(busArrivalInfo.nextBus3),
-                                  ],
-                                ),
+                            ),
+                            Flexible(
+                              flex: 2,
+                              child: Row(
+                                children: [
+                                  getArrivalInfo(busArrivalInfo.nextBus),
+                                  getArrivalInfo(busArrivalInfo.nextBus2),
+                                  getArrivalInfo(busArrivalInfo.nextBus3),
+                                ],
                               ),
-                            ],
-                          ),
-                          Divider(),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                        Divider(),
+                      ],
                     );
                   },
                 )

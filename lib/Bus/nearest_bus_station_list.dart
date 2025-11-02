@@ -47,7 +47,7 @@ class _BusStationListState extends ConsumerState<NearestBusStationList> {
     final double screenHeight = MediaQuery.of(context).size.height;
 
     return SizedBox(
-      height: screenHeight * 0.65,
+      height: screenHeight * 0.68,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         spacing: 10,
